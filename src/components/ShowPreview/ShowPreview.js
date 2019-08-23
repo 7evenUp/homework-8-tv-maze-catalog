@@ -10,7 +10,7 @@ export default class ShowPreview extends Component {
         return (
             <div className={`${styles.container} t-preview`}>
                 <div>
-                    <Link to={id ? `shows/${id}` : ''} className="t-link">{name}</Link>
+                    <Link to={`shows/${id}`} className="t-link">{name}</Link>
                     {image !== null && <img src={image.medium} alt={name} />}
                 </div>
                 <div dangerouslySetInnerHTML={{__html: summary}}/>

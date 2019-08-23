@@ -1,35 +1,33 @@
 import { searchRequest, searchSuccess, searchFailure } from '../actions'
+import { handleActions } from 'redux-actions'
+import { combineReducers } from 'redux'
 
-const initialState = {
-    isFetching: false,
-    result: [],
-    error: null
-}
+const isFetching = handleActions(
+    {
+        [searchRequest] : () => true,
+        [searchSuccess] : () => false
+    },
+    false
+)
 
-export default (state = initialState, { type, payload }) => {
-    switch (type) {
-        case searchRequest.toString():
-            return {
-                ...state,
-                isFetching: true,
-                result: []
-            }
+const result = handleActions(
+    {
+        [searchRequest]: () => [],
+        [searchSuccess]: (_state, action) => action.payload
+    },
+    []
+)
 
-        case searchSuccess.toString():
-            return {
-                ...state,
-                isFetching: false,
-                result: payload
-            }
-        
-        case searchFailure.toString():
-            return {
-                ...state,
-                isFetching: false,
-                error: payload
-            }
+const error = handleActions(
+    {
+        [searchRequest]: () => null,
+        [searchFailure]: (_state, action) => action.payload
+    },
+    null
+)
 
-        default:
-            return state
-    }
-}
+export default combineReducers({
+    isFetching,
+    result,
+    error
+})
